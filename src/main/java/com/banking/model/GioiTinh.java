@@ -1,5 +1,7 @@
 package com.banking.model;
 
 public enum GioiTinh {
-    Nam, Nu, Khac
+    Nam, //comment
+    Nu,
+    Khac
 }

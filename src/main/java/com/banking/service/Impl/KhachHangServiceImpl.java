@@ -42,6 +42,7 @@ public class KhachHangServiceImpl implements IKhachHangService {
 //            newKhachHang.loadFromDTO(khachHangDTO);
             MapperUtils.entityToDTO(newKhachHang, KhachHangDTO.class);
             khachHangRepository.save(newKhachHang);
+            //return dữ liệu
         }
 
     }

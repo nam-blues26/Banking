@@ -3,6 +3,7 @@ package com.banking.controller;
 import com.banking.dto.KhachHangDTO;
 import com.banking.model.KhachHang;
 import com.banking.service.Impl.KhachHangServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ public class KhachHangController {
     private KhachHangServiceImpl khachHangService;
 
     // API trả về toàn bộ khách hàng, trạng thái thành công
+    @Operation(description = "Xem danh sách Khách hàng")
     @GetMapping()
     public ResponseEntity<List<KhachHangDTO>> getAll() {
 
@@ -32,8 +34,16 @@ public class KhachHangController {
     }
 
     // API tìm khách hàng theo id
-    // Tham số truyền vào với kiểu dữ liệu là long
+    // Tham số truyền vào với kiểu dữ liệu là long. Tên param: kiểu dữ liệu: m
     // Trả về thông tin khách hàng với trạng thái thành công
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @Operation(description = "Xem thông tin khách hàng")
+
     @GetMapping("/{khachHangId}")
     public ResponseEntity<KhachHangDTO> getKhachHangById(
             @PathVariable(name = "khachHangId") Long id
@@ -47,6 +57,7 @@ public class KhachHangController {
     // Tham số vào là 1 object với các thuộc tính:
     // SDT, CCCD, Hoten, GioiTinh, NgaySinh
     // Trả về thông tin khách hàng với trạng thái thành công
+    @Operation(description = "Tạo Khách hàng")
     @PostMapping
     public ResponseEntity<KhachHangDTO> createKhachHang(
             @RequestBody @Valid KhachHangDTO khachHangDTO
@@ -61,6 +72,8 @@ public class KhachHangController {
     // Tham số truyền vào thứ 2 là 1 object với các thuộc tính :
     // SDT, CCCD, Hoten, GioiTinh, NgaySinh
     // Trả về true với trạng thái thành công
+    @Operation(description = "Sửa Khách hàng")
+
     @PutMapping("/{id}")
     public ResponseEntity<Boolean> updateKhachHang(
             @PathVariable Long id,
@@ -72,6 +85,8 @@ public class KhachHangController {
     // API xóa khách hàng theo id
     // Tham số truyền vào là id của khách hàng với kiểu dữ liệu là long
     // Trả về true với trạng thái thành công
+    @Operation(description = "Xóa Khách hàng")
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteKhachHang(
             @PathVariable Long id

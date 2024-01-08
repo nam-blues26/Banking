@@ -5,7 +5,7 @@ public class Constant {
     // Các message trả về
     public static class MessageResponse{
         // Not found exception
-        public static final String KH_NOT_FOUND ="Khách hàng không tồn tại";
+        public static final String KH_NOT_FOUND ="khachhang.notfound";
 
         //Không nhập
         public static final String KH_SDT_NOT_BLANK = "Số điện thoại không được để trống";
