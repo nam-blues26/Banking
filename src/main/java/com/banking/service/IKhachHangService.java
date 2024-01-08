@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface IKhachHangService {
 
+
     List<KhachHangDTO> findAllKhachHang();
     void insertKhachHang(KhachHangDTO khachHangDTO);
     void updateKhachHang(Long id, KhachHangDTO khachHangDTO);

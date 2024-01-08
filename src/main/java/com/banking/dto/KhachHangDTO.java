@@ -14,6 +14,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+
+// class chuyển đỗi dữ liệu từ entity khachhang
+// Với các thuộc tính : sdt, cccd, hoten, gioitinh, ngaysinh
+// Hàm loadFromEntity chuyển data từ entity khachhang sang khachhangDTO
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
