@@ -18,30 +18,30 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class KhachHangDTO {
-    @NotBlank(message = Constant.MessageResponse.KH_PHONE_NOT_BLANK)
-    @Size(max = 11, message = Constant.MessageResponse.KH_PHONE_MAX_LENGHT)
-    @Pattern(regexp = "\\d+", message = Constant.MessageResponse.KH_PHONE_REGEX)
-    @Schema(example = "09127362")
+    @NotBlank(message = Constant.MessageResponse.KH_SDT_NOT_BLANK)
+    @Size(max = 11, message = Constant.MessageResponse.KH_SDT_MAX_LENGHT)
+    @Pattern(regexp = "\\d+", message = Constant.MessageResponse.KH_SDT_REGEX)
+    @Schema(example = Constant.SwaggerExValue.KH_SDT)
     private String sdt;
 
     @NotBlank(message = Constant.MessageResponse.KH_CCCD_NOT_BLANK)
     @Size(max = 12, message = Constant.MessageResponse.KH_CCCD_MAX_LENGHT)
     @Pattern(regexp = "\\d+", message = Constant.MessageResponse.KH_CCCD_REGEX)
     @Column(unique = true)
-    @Schema(example = "0123456789")
+    @Schema(example = Constant.SwaggerExValue.KH_CCCD)
     private String cccd;
 
     @NotBlank(message = Constant.MessageResponse.KH_HOTEN_NOT_BLANK)
-    @Schema(example = "Nguyễn Văn A")
+    @Schema(example = Constant.SwaggerExValue.KH_HO_TEN)
     private String hoTen;
 
     @Enumerated(EnumType.STRING)
-    @Schema(example = "Nam")
+    @Schema(example = Constant.SwaggerExValue.KH_GIOI_TINH)
     private GioiTinh gioiTinh;
 
     @NotNull(message = Constant.MessageResponse.KH_NGAYSINH_NOT_NULL)
     @Past(message = Constant.MessageResponse.KH_NGAYSINH_PAST)
-    @Schema(example = "1992-06-26")
+    @Schema(example = Constant.SwaggerExValue.KH_NGAY_SINH)
     private LocalDate ngaySinh;
 
     public static KhachHangDTO loadFromEntity(KhachHang khacHang) {

@@ -1,6 +1,8 @@
 package com.banking.exception.advice;
 
 import com.banking.exception.ErrorResponse;
+import com.banking.exception.ExistException;
+import com.banking.exception.NotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -34,6 +36,28 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         );
 
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ExistException.class)
+    @ResponseStatus(HttpStatus.CONFLICT) //409
+    public ErrorResponse ExistHandler(ExistException ex, WebRequest request){
+        return new ErrorResponse(
+                HttpStatus.CONFLICT.value(),
+                new Date(),
+                List.of(ex.getMessage()),
+                request.getDescription(false)
+        );
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse NotFoundHandler(NotFoundException ex, WebRequest request){
+        return new ErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                new Date(),
+                List.of(ex.getMessage()),
+                request.getDescription(false)
+        );
     }
 }
 
