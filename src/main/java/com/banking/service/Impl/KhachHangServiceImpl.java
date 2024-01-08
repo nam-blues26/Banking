@@ -4,7 +4,7 @@ import com.banking.constant.Constant;
 import com.banking.dto.KhachHangDTO;
 import com.banking.exception.ExistException;
 import com.banking.exception.NotFoundException;
-import com.banking.model.KhachHang;
+import com.banking.entity.KhachHang;
 import com.banking.repository.IKhachHangRepository;
 import com.banking.service.IKhachHangService;
 import com.banking.utils.MapperUtils;
