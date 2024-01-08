@@ -1,8 +1,6 @@
 package com.banking.model;
 
-import com.banking.constant.Constant;
 import com.banking.dto.KhachHangDTO;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -11,6 +9,16 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+// class map với bảng khachhang trong db
+// Thuộc tính : 
+/*id: primary key kiểu long, giá trị tự động tăng
+ * sdt: ràng buộc not blank, maxlength = 11, chỉ chứa số
+ * cccd: ràng buộc not blank, maxlength = 12, chi chứa số
+ * hoTen: ràng buộc not blank
+ * ngaySinh: ràng buộc not null, không được là ngày trong tương lai 9/1/2024 -> error
+ */
+// Hàm loadFromDTO chuyển đỗi dữ liệu từ khachhangDTO sang khachhang
+// Tham số nhận vào là 1 khachhangDTO
 @Entity
 @Data
 @AllArgsConstructor
@@ -20,30 +28,25 @@ public class KhachHang {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotBlank(message = Constant.MessageResponse.KH_PHONE_NOT_BLANK)
-    @Size(max = 11, message = Constant.MessageResponse.KH_PHONE_MAX_LENGHT)
-    @Pattern(regexp = "\\d+", message = Constant.MessageResponse.KH_PHONE_REGEX)
-    @Schema(example = "09127362")
+    @NotBlank(message = "{khachhang.not.blank}")
+    @Size(max = 11, message = "{khachhang.sdt.maxlength}")
+    @Pattern(regexp = "\\d+", message = "{khachhang.sdt.regex}")
     private String sdt;
 
-    @NotBlank(message = Constant.MessageResponse.KH_CCCD_NOT_BLANK)
-    @Size(max = 12, message = Constant.MessageResponse.KH_CCCD_MAX_LENGHT)
-    @Pattern(regexp = "\\d+", message = Constant.MessageResponse.KH_CCCD_REGEX)
+    @NotBlank(message = "{khachhang.cccd.notblank}")
+    @Size(max = 12, message = "{khachhang.cccd.maxlength}")
+    @Pattern(regexp = "\\d+", message = "{khachhang.cccd.regex}")
     @Column(unique = true)
-    @Schema(example = "0123456789")
     private String cccd;
 
-    @NotBlank(message = Constant.MessageResponse.KH_HOTEN_NOT_BLANK)
-    @Schema(example = "Nguyễn Văn A")
+    @NotBlank(message = "{khachhang.hoten.notblank}")
     private String hoTen;
 
     @Enumerated(EnumType.STRING)
-    @Schema(example = "Nam")
     private GioiTinh gioiTinh;
 
-    @NotNull(message = Constant.MessageResponse.KH_NGAYSINH_NOT_NULL)
-    @Past(message = Constant.MessageResponse.KH_NGAYSINH_PAST)
-    @Schema(example = "1992-06-26")
+    @NotNull(message = "{khachhang.ngaysinh.notnull}")
+    @Past(message = "{khachhang.ngaysinh.past}")
     private LocalDate ngaySinh;
 
 

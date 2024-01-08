@@ -5,6 +5,8 @@ import com.banking.model.KhachHang;
 
 import java.util.List;
 
+// Interface định nghĩa các phương thức dùng chung cho các class trong service
+// CRUD, search
 public interface IKhachHangService {
 
     List<KhachHangDTO> findAllKhachHang();

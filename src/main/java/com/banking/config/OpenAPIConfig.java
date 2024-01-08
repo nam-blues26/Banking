@@ -11,10 +11,11 @@ import java.util.List;
 
 @Configuration
 public class OpenAPIConfig {
-
+// lấy đường dẫn trong application.properties : http://localhost:8000
     @Value("${open.api.dev-url}")
     private String devUrl;
 
+    // Bean cấu hình swagger
     @Bean
     public OpenAPI myOpenAPI() {
         Server devServer = new Server();
