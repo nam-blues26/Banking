@@ -7,6 +7,7 @@ import com.banking.exception.NotFoundException;
 import com.banking.model.KhachHang;
 import com.banking.repository.IKhachHangRepository;
 import com.banking.service.IKhachHangService;
+import com.banking.utils.MapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,8 @@ public class KhachHangServiceImpl implements IKhachHangService {
             throw  new ExistException(Constant.MessageResponse.KH_CCCD_EXIST);
         }else {
             KhachHang newKhachHang = new KhachHang();
-            newKhachHang.loadFromDTO(khachHangDTO);
+//            newKhachHang.loadFromDTO(khachHangDTO);
+            MapperUtils.entityToDTO(newKhachHang, KhachHangDTO.class);
             khachHangRepository.save(newKhachHang);
         }
 
@@ -41,7 +43,8 @@ public class KhachHangServiceImpl implements IKhachHangService {
         KhachHang khachHang = khachHangRepository.findKhachHangById(id)
                 .orElseThrow(() -> new NotFoundException(Constant.MessageResponse.KH_NOT_FOUND));
 
-        khachHang.loadFromDTO(khachHangDTO);
+//        khachHang.loadFromDTO(khachHangDTO);
+        MapperUtils.entityToDTO(khachHang, KhachHangDTO.class);
         khachHangRepository.save(khachHang);
     }
 
