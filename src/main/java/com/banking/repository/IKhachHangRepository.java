@@ -14,6 +14,6 @@ public interface IKhachHangRepository extends JpaRepository<KhachHang,Long > {
     // trả ra 1 optional -> tránh exception null pointer khi không tìm thấy khách hàng
     Optional<KhachHang> findKhachHangByCccd(String cccd);
     // Hàm tim khách hàng theo id khách hàng với tham só truyền vào là 1 chuỗi cccd
-    // trả ra 1 optional -> tránh exception null pointer khi không tìm thấy khách hàng  
-      Optional<KhachHang> findKhachHangById(Long id);
+    // trả ra 1 optional -> tránh exception null pointer khi không tìm thấy khách hàng
+    Optional<KhachHang> findKhachHangById(Long id);
 }

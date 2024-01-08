@@ -11,7 +11,7 @@ import java.util.List;
 
 @Configuration
 public class OpenAPIConfig {
-// lấy đường dẫn trong application.properties : http://localhost:8000
+    // lấy đường dẫn trong application.properties : http://localhost:8000
     @Value("${open.api.dev-url}")
     private String devUrl;
 
