@@ -1,15 +1,16 @@
 package com.banking.service;
 
 import com.banking.dto.KhachHangDTO;
-import com.banking.model.KhachHang;
+import com.banking.dto.KhachHangRequest;
 
 import java.util.List;
 
 public interface IKhachHangService {
 
+
     List<KhachHangDTO> findAllKhachHang();
-    void insertKhachHang(KhachHangDTO khachHangDTO);
-    void updateKhachHang(Long id, KhachHangDTO khachHangDTO);
+    KhachHangDTO insertKhachHang(KhachHangRequest khachHangRequest);
+    KhachHangDTO updateKhachHang(Long id, KhachHangRequest khachHangRequest);
     void deleteKhachHang(Long id);
     KhachHangDTO findKhachHangById(Long id);
 }
