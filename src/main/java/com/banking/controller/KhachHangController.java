@@ -1,6 +1,7 @@
 package com.banking.controller;
 
 import com.banking.dto.KhachHangDTO;
+import com.banking.dto.KhachHangRequest;
 import com.banking.service.Impl.KhachHangServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -47,23 +48,23 @@ public class KhachHangController {
 
     /**
      * API thêm khách hàng
-     * @param khachHangDTO với các thuộc tính:
+     * @param khachHangRequest với các thuộc tính:
      * ID, SDT, CCCD, Hoten, GioiTinh, NgaySinh
      * @return khachHanhDTO với trạng thái thành công
      */
     @Operation(description = "Tạo Khách hàng")
     @PostMapping
     public ResponseEntity<KhachHangDTO> createKhachHang(
-            @RequestBody @Valid KhachHangDTO khachHangDTO
+            @RequestBody @Valid KhachHangRequest khachHangRequest
     ) {
-        khachHangService.insertKhachHang(khachHangDTO);
+        KhachHangDTO khachHangDTO =  khachHangService.insertKhachHang(khachHangRequest);
         return new ResponseEntity<>(khachHangDTO, HttpStatus.OK);
     }
 
     /**
      * API sửa khách hàng theo id
      * @param id map với tham số đường dẫn id với kiểu dữ liệu long
-     * @param khachHangDTO với các thuộc tính
+     * @param khachHangRequest với các thuộc tính
      * SDT, CCCD, Hoten, GioiTinh, NgaySinh
      * @return Trả về true với trạng thái thành công
      */
@@ -71,8 +72,8 @@ public class KhachHangController {
     @PutMapping("/{id}")
     public ResponseEntity<Boolean> updateKhachHang(
             @PathVariable Long id,
-            @RequestBody @Valid KhachHangDTO khachHangDTO){
-        khachHangService.updateKhachHang(id,khachHangDTO);
+            @RequestBody @Valid KhachHangRequest khachHangRequest){
+        khachHangService.updateKhachHang(id,khachHangRequest);
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 

@@ -2,6 +2,7 @@ package com.banking.service.Impl;
 
 import com.banking.constant.Constant;
 import com.banking.dto.KhachHangDTO;
+import com.banking.dto.KhachHangRequest;
 import com.banking.exception.ExistException;
 import com.banking.exception.NotFoundException;
 import com.banking.entity.KhachHang;
@@ -30,38 +31,38 @@ public class KhachHangServiceImpl implements IKhachHangService {
     }
 
     /**
-     * @param khachHangDTO với các thuộc tính:
+     * @param khachHangRequest với các thuộc tính:
      * SDT, CCCD, Hoten, GioiTinh, NgaySinh
      * case 1 : trùng cccd sẽ trả về class lỗi CCCDisExistException
      * case 2 : cccd mới -> thêm vào db
      */
     @Override
-    public void insertKhachHang(KhachHangDTO khachHangDTO) {
-        Optional<KhachHang> khachHang = khachHangRepository.findKhachHangByCccd(khachHangDTO.getCccd());
+    public KhachHangDTO insertKhachHang(KhachHangRequest khachHangRequest) {
+        Optional<KhachHang> khachHang = khachHangRepository.findKhachHangByCccd(khachHangRequest.getCccd());
         if (khachHang.isPresent()){
             throw  new ExistException(Constant.MessageResponse.KH_CCCD_EXIST);
         }else {
-            KhachHang newKhachHang = new KhachHang();
-//            newKhachHang.loadFromDTO(khachHangDTO);
-            MapperUtils.entityToDTO(newKhachHang, KhachHangDTO.class);
-            khachHangRepository.save(newKhachHang);
-            //return dữ liệu
+            KhachHang newKhachHang =khachHangRepository.save(MapperUtils.dtoToEntity(khachHangRequest, KhachHang.class));
+
+            return MapperUtils.entityToDTO(newKhachHang, KhachHangDTO.class);
         }
     }
     /**
      * @param id -> id của khách hàng kiểu dữ liệu long
-     * @param khachHangDTO -> SDT, CCCD, Hoten, GioiTinh, NgaySinh
+     * @param khachHangRequest -> SDT, CCCD, Hoten, GioiTinh, NgaySinh
      * case 1 : Không tìm thấy khách hằng với id truyền vào sẽ trả về class lỗi KhachHangNotFoundException
      * case 2 : tìm thấy khách hàng với id truyền vào -> update vào db
      */
     @Override
-    public void updateKhachHang(Long id, KhachHangDTO khachHangDTO) {
-        KhachHang khachHang = khachHangRepository.findKhachHangById(id)
+    public KhachHangDTO updateKhachHang(Long id, KhachHangRequest khachHangRequest) {
+         khachHangRepository.findKhachHangById(id)
                 .orElseThrow(() -> new NotFoundException(Constant.MessageResponse.KH_NOT_FOUND));
 
 //        khachHang.loadFromDTO(khachHangDTO);
-        MapperUtils.entityToDTO(khachHang, KhachHangDTO.class);
-        khachHangRepository.save(khachHang);
+        KhachHang newKhachHang =khachHangRepository.save(MapperUtils.dtoToEntity(khachHangRequest, KhachHang.class));
+
+        return MapperUtils.entityToDTO(newKhachHang, KhachHangDTO.class);
+
     }
     /**
      * @param id -> id của khách hàng kiểu dữ liệu long
