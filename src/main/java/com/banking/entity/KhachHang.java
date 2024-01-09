@@ -1,8 +1,7 @@
-package com.banking.model;
+package com.banking.entity;
 
 import com.banking.constant.Constant;
 import com.banking.dto.KhachHangDTO;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;

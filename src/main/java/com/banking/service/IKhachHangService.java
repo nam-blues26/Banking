@@ -1,7 +1,6 @@
 package com.banking.service;
 
 import com.banking.dto.KhachHangDTO;
-import com.banking.model.KhachHang;
 
 import java.util.List;
 

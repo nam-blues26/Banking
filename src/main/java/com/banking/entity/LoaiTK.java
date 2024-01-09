@@ -1,4 +1,4 @@
-package com.banking.model;
+package com.banking.entity;
 
 /**
  * 2 giá trị:
