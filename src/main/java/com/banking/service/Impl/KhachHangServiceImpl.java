@@ -1,6 +1,6 @@
 package com.banking.service.Impl;
 
-import com.banking.constant.Constant;
+import com.banking.constant.MessageConstant;
 import com.banking.dto.KhachHangDTO;
 import com.banking.dto.KhachHangRequest;
 import com.banking.exception.ExistException;
@@ -8,6 +8,7 @@ import com.banking.exception.NotFoundException;
 import com.banking.entity.KhachHang;
 import com.banking.repository.IKhachHangRepository;
 import com.banking.service.IKhachHangService;
+import com.banking.service.base.IMessageService;
 import com.banking.utils.MapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,9 @@ public class KhachHangServiceImpl implements IKhachHangService {
 
     @Autowired
     private IKhachHangRepository khachHangRepository;
+
+    @Autowired
+    private IMessageService messageService;
     /**
      * @return 1 danh sách khachhangDTO
      */
@@ -40,7 +44,7 @@ public class KhachHangServiceImpl implements IKhachHangService {
     public KhachHangDTO insertKhachHang(KhachHangRequest khachHangRequest) {
         Optional<KhachHang> khachHang = khachHangRepository.findKhachHangByCccd(khachHangRequest.getCccd());
         if (khachHang.isPresent()){
-            throw  new ExistException(Constant.MessageResponse.KH_CCCD_EXIST);
+            throw  new ExistException(messageService.getMessage(MessageConstant.KH_CCCD_EXIST));
         }else {
             KhachHang newKhachHang =khachHangRepository.save(MapperUtils.dtoToEntity(khachHangRequest, KhachHang.class));
 
@@ -56,7 +60,7 @@ public class KhachHangServiceImpl implements IKhachHangService {
     @Override
     public KhachHangDTO updateKhachHang(Long id, KhachHangRequest khachHangRequest) {
          khachHangRepository.findKhachHangById(id)
-                .orElseThrow(() -> new NotFoundException(Constant.MessageResponse.KH_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(messageService.getMessage(MessageConstant.KH_NOT_FOUND)));
 
 //        khachHang.loadFromDTO(khachHangDTO);
         KhachHang newKhachHang =khachHangRepository.save(MapperUtils.dtoToEntity(khachHangRequest, KhachHang.class));
@@ -72,7 +76,7 @@ public class KhachHangServiceImpl implements IKhachHangService {
     @Override
     public void deleteKhachHang(Long id) {
         KhachHang khachHang = khachHangRepository.findKhachHangById(id)
-                .orElseThrow(() -> new NotFoundException(Constant.MessageResponse.KH_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(messageService.getMessage(MessageConstant.KH_NOT_FOUND)));
 
         khachHangRepository.delete(khachHang);
     }
@@ -85,7 +89,7 @@ public class KhachHangServiceImpl implements IKhachHangService {
     @Override
     public KhachHangDTO findKhachHangById(Long id) {
         KhachHang khachHang = khachHangRepository.findKhachHangById(id)
-                .orElseThrow(() -> new NotFoundException(Constant.MessageResponse.KH_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(messageService.getMessage(MessageConstant.KH_NOT_FOUND)));
 
         return MapperUtils.entityToDTO(khachHang, KhachHangDTO.class);
     }

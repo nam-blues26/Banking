@@ -1,5 +1,6 @@
 package com.banking.dto;
 
+import com.banking.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,5 +12,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class TokenDTO {
+    private User user;
     private String token;// token trả về
 }

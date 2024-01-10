@@ -5,17 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Class tiếp nhận req body
- * */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class AuthencationDTO {
+@NoArgsConstructor
+public class UserDTO {
+    @NotBlank
+    private String fullname;
 
     @NotBlank
-    private String username;//tên đăng nhập người dùng
+    private String username;
 
     @NotBlank
-    private String password;//mk người dùng
+    private String password;
+
 }

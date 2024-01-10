@@ -17,7 +17,7 @@ import java.util.List;
 // Endpoint: /api/khach-hang/
 @RestController
 @Tag(name = "Khach hang", description = "KhachHang APIs")
-@RequestMapping("/api/khach-hang")
+@RequestMapping("${project.bank.version.v1}/khach-hang")
 public class KhachHangController {
     @Autowired
     private KhachHangServiceImpl khachHangService;

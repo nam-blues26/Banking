@@ -1,9 +1,11 @@
 package com.banking.security;
 
+import com.banking.constant.MessageConstant;
 import com.banking.constant.UserConstant;
 import com.banking.entity.User;
 import com.banking.exception.NotFoundException;
-import com.banking.repository.IUserReporitory;
+import com.banking.repository.IUserRepository;
+import com.banking.service.base.IMessageService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,8 +17,10 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class CustomerUserDetailsService  implements UserDetailsService {
     @Autowired
-    private IUserReporitory iUserReporitory;
+    private IUserRepository iUserReporitory;
 
+    @Autowired
+    private IMessageService messageService;
     /**
      * Ghi đè lại phương thức findByUsername của UserDetailsService.
      * Gọi đến iUserReporitory trả lại User theo username
@@ -25,7 +29,7 @@ public class CustomerUserDetailsService  implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = iUserReporitory.findByUsername(username).orElseThrow(()
-                -> new NotFoundException(UserConstant.USER_NOT_FOUND_BY_NAME + username));
+                -> new NotFoundException(messageService.getMessage(MessageConstant.USER_NOT_FOUND) + username));
         return new CustomerUserDetails(user);
     }
 }

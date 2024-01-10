@@ -16,7 +16,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table
+@Table(name = "USERS")
 public class User {
 
     @Id
