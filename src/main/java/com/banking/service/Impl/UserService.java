@@ -39,7 +39,7 @@ public class UserService implements IUserService {
         Optional<User> userCheck = userRepository.findByUsername(user.getUsername());
         if (userCheck.isPresent()) {
             userCheck.get().setPassword(passwordEncoder.encode(user.getPassword()));
-            userCheck.get().setRole(roleRepo.findById(1).get());
+//            userCheck.get().setRole(roleRepo.findById(1).get());
             return userRepository.save(userCheck.get());
         }
         throw new ExistException(userExist);

@@ -20,9 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-@RestController
-@RequestMapping("/auth")
 import com.banking.entity.User;
 import com.banking.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,15 +30,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Class tạo api đăng ký
- * endpoint api/v1/register
+ * Class tạo api đăng ký, api đăng nhập -> token
+ * endpoint /auth/**
  */
 @RestController
-@RequestMapping("api/v1/register")
+@RequestMapping("/auth")
 public class AuthController {
     @Autowired
     private IUserService userService;
-    //api dangky, dangnhap
 
     @Autowired
     private JwtService jwtService;
