@@ -37,7 +37,7 @@ public class UserService implements IUserService {
     @Override
     public User addUser(User user) {
         Optional<User> userCheck = userRepository.findByUsername(user.getUsername());
-        if (userCheck.isPresent()) {
+        if (!userCheck.isPresent()) {
             userCheck.get().setPassword(passwordEncoder.encode(user.getPassword()));
             userCheck.get().setRole(roleRepo.findById(1).get());
             return userRepository.save(userCheck.get());
