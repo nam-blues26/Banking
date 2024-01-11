@@ -1,16 +1,22 @@
 package com.banking.security;
 
+import com.banking.entity.Permission;
 import com.banking.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Customer User khi implement UserDetails
+ */
 public class CustomerUserDetails implements UserDetails {
 
-    private User user; //Sử dụng lưu trong SecurityContext
+    private User user;
 
     public CustomerUserDetails(User user) {
         this.user = user;
@@ -21,7 +27,7 @@ public class CustomerUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return user.getRoles()
                 .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .map(role -> new SimpleGrantedAuthority(role.getName().toString()))
                 .collect(Collectors.toList());
     }
 

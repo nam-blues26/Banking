@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -78,6 +79,17 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     public ErrorResponse NotFoundHandler(NotFoundException ex, WebRequest request){
         return new ErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
+                new Date(),
+                List.of(ex.getMessage()),
+                request.getDescription(false)
+        );
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse BadCredentialsHandler(BadCredentialsException ex, WebRequest request){
+        return new ErrorResponse(
+                HttpStatus.FORBIDDEN.value(),
                 new Date(),
                 List.of(ex.getMessage()),
                 request.getDescription(false)

@@ -2,6 +2,7 @@ package com.banking.entity;
 
 import com.banking.constant.MessageConstant;
 import com.banking.dto.KhachHangDTO;
+import com.banking.dto.KhachHangRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -50,7 +51,7 @@ public class KhachHang {
     private LocalDate ngaySinh;
 
 
-    public void loadFromDTO(KhachHangDTO khachHangDTO) {
+    public void loadFromDTO(KhachHangRequest khachHangDTO) {
         this.sdt = khachHangDTO.getSdt();
         this.cccd = khachHangDTO.getCccd();
         this.hoTen = khachHangDTO.getHoTen();

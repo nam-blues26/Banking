@@ -1,12 +1,8 @@
 package com.banking.controller;
 
-import com.banking.constant.MessageConstant;
-import com.banking.constant.UserConstant;
 import com.banking.dto.AuthencationDTO;
 import com.banking.dto.TokenDTO;
 import com.banking.dto.UserDTO;
-import com.banking.exception.NotFoundException;
-import com.banking.security.JwtService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -15,22 +11,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.banking.entity.User;
 import com.banking.service.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Class tạo api đăng ký, api đăng nhập -> token
@@ -42,18 +28,18 @@ public class AuthController {
     @Autowired
     private IUserService userService;
 
-    @Autowired
-    private JwtService jwtService;
+    /**
+     *
+     * @param authencationDTO : username, password
+     * @return User có thông tin: Id, full name, username, password
+     */
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Operation(summary = "API login xác thực người dùng", description = "Nếu xác thực thành công trả về 1 token")
+    @Operation(summary = "API login xác thực người dùng", description = "Nếu đăng ký thành công trả về thông tin tài khoản người dùng")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Thành công trả về token"),
-            @ApiResponse(responseCode = "403", description = "Không tìm thấy người dùng (username và password không hợp lệ)")
+            @ApiResponse(responseCode = "200", description = "Thành công trả về thông tin tài khoản người dùng"),
+            @ApiResponse(responseCode = "403", description = "Không đúng mật khẩu"),
+            @ApiResponse(responseCode = "404", description = "Không tìm thấy username")
     })
-    @Parameters(@Parameter(name = "AuthencationDTO.class", description = "Gửi 2 trường username và password"))
     @PostMapping("/login")
     public ResponseEntity<TokenDTO> createToken(@RequestBody @Valid AuthencationDTO authencationDTO) {
         return ResponseEntity.ok().body(userService.login(authencationDTO));
@@ -61,9 +47,14 @@ public class AuthController {
 
     /**
      * API thêm user
-     * @param userDTO -> thuộc tính id, fullName, UserName, passWord
+     * @param userDTO -> thuộc tính  fullName, UserName, passWord
      * @return user với trạng thái thành công
      */
+    @Operation(summary = "API đăng ký", description = "Nếu xác thực thành công trả về token")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Thành công trả về User"),
+            @ApiResponse(responseCode = "409", description = "tìm thấy người dùng đã tồn tại")
+    })
     @PostMapping("/register")
     public ResponseEntity<User> addUser(@RequestBody UserDTO userDTO) {
         return ResponseEntity.ok().body(userService.addUser(userDTO));

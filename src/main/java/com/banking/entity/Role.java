@@ -1,5 +1,6 @@
 package com.banking.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +22,16 @@ public class Role {
     private int id;
 
     @Column(name ="role_name")
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private RoleType name;
 
 
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "role_permission",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    private Collection<Permission> permissions;
 }

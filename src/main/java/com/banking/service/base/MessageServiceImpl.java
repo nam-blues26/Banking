@@ -12,6 +12,11 @@ public class MessageServiceImpl implements IMessageService {
     @Autowired
     private MessageSource messageSource;
 
+    /**
+     *
+     * @param code truyền vào biến constant ở MessageConstant
+     * @return giá trị trong message_vi.properties
+     */
     public String getMessage(String code) {
         try {
             return messageSource.getMessage(code, null, Locale.getDefault());

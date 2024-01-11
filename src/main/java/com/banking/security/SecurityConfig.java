@@ -1,5 +1,10 @@
 package com.banking.security;
 
+//import com.banking.security.filter.JwtTokenFilter;
+
+import com.banking.constant.AuthConstant;
+import com.banking.entity.RoleType;
+import com.banking.security.filter.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -14,9 +19,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -29,7 +34,7 @@ public class SecurityConfig extends Exception {
     private CustomerUserDetailsService userDetailsService;
 
     @Autowired
-    private JwtService jwtService;
+    private JwtTokenFilter jwtTokenFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -38,6 +43,7 @@ public class SecurityConfig extends Exception {
 
     /**
      * Bean để dùng quản lý các người dùng đã đăng nhập
+     *
      * @param config AuthenticationManager.class
      * @return AuthenticationManager object bean
      * @throws Exception
@@ -50,7 +56,7 @@ public class SecurityConfig extends Exception {
     /**
      * Cấu hình AuthenticationProvider trong Spring Security giúp xác thực người dùng bằng cách
      * sử dụng UserDetailsService và PasswordEncoder
-     * */
+     */
     @Bean
     protected AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -63,23 +69,24 @@ public class SecurityConfig extends Exception {
      * Bean cho SecurityFilterChain
      * Sử dụng SecurityFilterChain cấu hình cho Spring Security
      * Bao gồm phân quyền các endpoint
-     * */
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
+        http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(r ->{
-                    r.requestMatchers(
-                                    "/**"
-//                                    String.format("%s/auth/**", apiPrefix)
-
-                            ).permitAll()
-//                            .requestMatchers(POST,
-//                                    String.format("%s/auth/**", apiPrefix)).permitAll()
-                            .anyRequest()
-                            .authenticated();
-                })
-                .build();
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests(r -> {
+                    r.requestMatchers(GET,String.format("%s/khach-hang/**", apiPrefix))
+                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString(),RoleType.ROLE_USER.toString()); // có quyền ADMIN và USER
+                    r.requestMatchers(POST,String.format("%s/khach-hang/**", apiPrefix))
+                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString(),RoleType.ROLE_USER.toString()); // có quyền ADMIN và USER
+                    r.requestMatchers(PUT,String.format("%s/khach-hang/**", apiPrefix))
+                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString());                               // có quyền USER
+                    r.requestMatchers(DELETE,String.format("%s/khach-hang/**", apiPrefix))
+                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString());                               // có quyền USER
+                    r.anyRequest().permitAll();                                                             // những request còn lại không cần quyền
+                });
+        return http.build();
     }
 
 

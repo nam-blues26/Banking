@@ -1,14 +1,19 @@
 package com.banking.security;
 
 import com.banking.dto.TokenDTO;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.security.SecureRandom;
 import java.util.Date;
+import java.util.function.Function;
 
 @Component
 public class JwtService {
@@ -41,6 +46,62 @@ public class JwtService {
     private Key getSignWithKey() {
         byte[] keyBytes= Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    /**
+     *
+     * @param token
+     * @return Lấy ra danh sách cách Claims từ tokem
+     */
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSignWithKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    /**
+     * trả về 1 Claim
+     * @param token
+     * @param claimsResolver dạng của claim
+     * @return Claim
+     * @param <T>
+     */
+    public  <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = this.extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    /**
+     * Kiểm tra hạn của token
+     * @param token
+     * @return còn true, hết false
+     */
+    public boolean isTokenExpired(String token) {
+        Date expirationDate = this.extractClaim(token, Claims::getExpiration);
+        return expirationDate.before(new Date());
+    }
+
+    /**
+     * lấy username
+     * @param token
+     * @return username
+     */
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
+
+    /**
+     * Kiểm tra xem token hợp lệ không
+     * @param token
+     * @param userDetails
+     * @return
+     */
+    public boolean validateToken(String token, UserDetails userDetails) {
+        String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername()))
+                && !isTokenExpired(token);
     }
 
 }

@@ -20,6 +20,10 @@ import java.util.Locale;
 @Configuration
 public class MessageSourceConfig {
 
+    /**
+     *  Cấu hình cho file message_vi.properties
+     * @return MessageSource
+     */
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
