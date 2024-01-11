@@ -12,6 +12,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class TokenDTO {
-    private User user;
+
     private String token;// token trả về
 }

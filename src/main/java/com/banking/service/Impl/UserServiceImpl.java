@@ -87,6 +87,6 @@ public class UserServiceImpl implements IUserService {
         );
         authenticationManager.authenticate(authenticationToken);
 
-        return new TokenDTO(user, jwtService.generateToken(authencationDTO.getUsername()));
+        return new TokenDTO(jwtService.generateToken(authencationDTO.getUsername()));
     }
 }

@@ -2,7 +2,6 @@ package com.banking.security;
 
 //import com.banking.security.filter.JwtTokenFilter;
 
-import com.banking.constant.AuthConstant;
 import com.banking.entity.RoleType;
 import com.banking.security.filter.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ public class SecurityConfig extends Exception {
     private String apiPrefix;
 
     @Autowired
-    private CustomerUserDetailsService userDetailsService;
+    private CustomerUserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
@@ -81,9 +80,9 @@ public class SecurityConfig extends Exception {
                     r.requestMatchers(POST,String.format("%s/khach-hang/**", apiPrefix))
                             .hasAnyAuthority(RoleType.ROLE_ADMIN.toString(),RoleType.ROLE_USER.toString()); // có quyền ADMIN và USER
                     r.requestMatchers(PUT,String.format("%s/khach-hang/**", apiPrefix))
-                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString());                               // có quyền USER
+                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString());                               // có quyền ADMIN
                     r.requestMatchers(DELETE,String.format("%s/khach-hang/**", apiPrefix))
-                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString());                               // có quyền USER
+                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString());                               // có quyền ADMIN
                     r.anyRequest().permitAll();                                                             // những request còn lại không cần quyền
                 });
         return http.build();

@@ -105,6 +105,7 @@ public class KhachHangServiceImpl implements IKhachHangService {
      * @param id -> id của khách hàng kiểu dữ liệu long
      *           case 1 : Không tìm thấy khách hằng với id truyền vào sẽ trả về class lỗi KhachHangNotFoundException
      *           case 2 : tìm thấy khách hàng với id truyền vào -> trả về 1 khachhangDTO
+     *           comment
      */
     @Override
     public KhachHang findKhachHangById(Long id) {
