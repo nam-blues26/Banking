@@ -1,8 +1,11 @@
 package com.banking.service.Impl;
 
+import com.banking.dto.AuthencationDTO;
+import com.banking.dto.TokenDTO;
+import com.banking.dto.UserDTO;
 import com.banking.entity.User;
 import com.banking.exception.ExistException;
-import com.banking.repository.IRoleRepo;
+import com.banking.repository.IRoleRepository;
 import com.banking.repository.IUserRepository;
 import com.banking.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +21,7 @@ public class UserService implements IUserService {
     private IUserRepository userRepository;
 
     @Autowired
-    private IRoleRepo roleRepo;
+    private IRoleRepository roleRepo;
 
     @Value("${user.username.exist}")
     private String userExist;
@@ -35,14 +38,18 @@ public class UserService implements IUserService {
      * @return user
      */
     @Override
-    public User addUser(User user) {
+    public User addUser(UserDTO user) {
         Optional<User> userCheck = userRepository.findByUsername(user.getUsername());
-        if (!userCheck.isPresent()) {
+        if (userCheck.isPresent()) {
             userCheck.get().setPassword(passwordEncoder.encode(user.getPassword()));
-            userCheck.get().setRole(roleRepo.findById(1).get());
+//            userCheck.get().setRole(roleRepo.findById(1).get());
             return userRepository.save(userCheck.get());
         }
-        throw new ExistException(userExist);
+        throw new ExistException(userExist);    }
+
+    @Override
+    public TokenDTO login(AuthencationDTO authencationDTO) {
+        return null;
     }
     //đăng nhập
 }

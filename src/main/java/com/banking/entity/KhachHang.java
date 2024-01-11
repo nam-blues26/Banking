@@ -1,7 +1,8 @@
 package com.banking.entity;
 
-import com.banking.constant.Constant;
+import com.banking.constant.MessageConstant;
 import com.banking.dto.KhachHangDTO;
+import com.banking.dto.KhachHangRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -28,29 +29,29 @@ public class KhachHang {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotBlank(message = Constant.MessageResponse.KH_SDT_NOT_BLANK)
-    @Size(max = 11, message = Constant.MessageResponse.KH_SDT_MAX_LENGHT)
-    @Pattern(regexp = "\\d+", message = Constant.MessageResponse.KH_SDT_REGEX)
+    @NotBlank(message = MessageConstant.KH_SDT_NOT_BLANK)
+    @Size(max = 11, message = MessageConstant.KH_SDT_MAX_LENGHT)
+    @Pattern(regexp = "\\d+", message = MessageConstant.KH_SDT_REGEX)
     private String sdt;
 
-    @NotBlank(message = Constant.MessageResponse.KH_CCCD_NOT_BLANK)
-    @Size(max = 12, message = Constant.MessageResponse.KH_CCCD_MAX_LENGHT)
-    @Pattern(regexp = "\\d+", message = Constant.MessageResponse.KH_CCCD_REGEX)
+    @NotBlank(message = MessageConstant.KH_CCCD_NOT_BLANK)
+    @Size(max = 12, message = MessageConstant.KH_CCCD_MAX_LENGHT)
+    @Pattern(regexp = "\\d+", message = MessageConstant.KH_CCCD_REGEX)
     @Column(unique = true)
     private String cccd;
 
-    @NotBlank(message = Constant.MessageResponse.KH_HOTEN_NOT_BLANK)
+    @NotBlank(message = MessageConstant.KH_HOTEN_NOT_BLANK)
     private String hoTen;
 
     @Enumerated(EnumType.STRING)
     private GioiTinh gioiTinh;
 
-    @NotNull(message = Constant.MessageResponse.KH_NGAYSINH_NOT_NULL)
-    @Past(message = Constant.MessageResponse.KH_NGAYSINH_PAST)
+    @NotNull(message = MessageConstant.KH_NGAYSINH_NOT_NULL)
+    @Past(message = MessageConstant.KH_NGAYSINH_PAST)
     private LocalDate ngaySinh;
 
 
-    public void loadFromDTO(KhachHangDTO khachHangDTO) {
+    public void loadFromDTO(KhachHangRequest khachHangDTO) {
         this.sdt = khachHangDTO.getSdt();
         this.cccd = khachHangDTO.getCccd();
         this.hoTen = khachHangDTO.getHoTen();

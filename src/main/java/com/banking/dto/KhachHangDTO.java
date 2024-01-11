@@ -1,6 +1,7 @@
 package com.banking.dto;
 
-import com.banking.constant.Constant;
+import com.banking.constant.MessageConstant;
+import com.banking.constant.SwaggerConstant;
 import com.banking.entity.GioiTinh;
 import com.banking.entity.KhachHang;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,30 +30,30 @@ public class KhachHangDTO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotBlank(message = Constant.MessageResponse.KH_SDT_NOT_BLANK)
-    @Size(max = 11, message = Constant.MessageResponse.KH_SDT_MAX_LENGHT)
-    @Pattern(regexp = "\\d+", message = Constant.MessageResponse.KH_SDT_REGEX)
-    @Schema(example = Constant.SwaggerExValue.KH_SDT)
+    @NotBlank(message = MessageConstant.KH_SDT_NOT_BLANK)
+    @Size(max = 11, message = MessageConstant.KH_SDT_MAX_LENGHT)
+    @Pattern(regexp = "\\d+", message = MessageConstant.KH_SDT_REGEX)
+    @Schema(example = SwaggerConstant.KH_SDT)
     private String sdt;
 
-    @NotBlank(message = Constant.MessageResponse.KH_CCCD_NOT_BLANK)
-    @Size(max = 12, message = Constant.MessageResponse.KH_CCCD_MAX_LENGHT)
-    @Pattern(regexp = "\\d+", message = Constant.MessageResponse.KH_CCCD_REGEX)
+    @NotBlank(message = MessageConstant.KH_CCCD_NOT_BLANK)
+    @Size(max = 12, message = MessageConstant.KH_CCCD_MAX_LENGHT)
+    @Pattern(regexp = "\\d+", message = MessageConstant.KH_CCCD_REGEX)
     @Column(unique = true)
-    @Schema(example = Constant.SwaggerExValue.KH_CCCD)
+    @Schema(example = SwaggerConstant.KH_CCCD)
     private String cccd;
 
-    @NotBlank(message = Constant.MessageResponse.KH_HOTEN_NOT_BLANK)
-    @Schema(example = Constant.SwaggerExValue.KH_HO_TEN)
+    @NotBlank(message = MessageConstant.KH_HOTEN_NOT_BLANK)
+    @Schema(example = SwaggerConstant.KH_HO_TEN)
     private String hoTen;
 
     @Enumerated(EnumType.STRING)
-    @Schema(example = Constant.SwaggerExValue.KH_GIOI_TINH)
+    @Schema(example = SwaggerConstant.KH_GIOI_TINH)
     private GioiTinh gioiTinh;
 
-    @NotNull(message = Constant.MessageResponse.KH_NGAYSINH_NOT_NULL)
-    @Past(message = Constant.MessageResponse.KH_NGAYSINH_PAST)
-    @Schema(example = Constant.SwaggerExValue.KH_NGAY_SINH)
+    @NotNull(message = MessageConstant.KH_NGAYSINH_NOT_NULL)
+    @Past(message = MessageConstant.KH_NGAYSINH_PAST)
+    @Schema(example = SwaggerConstant.KH_NGAY_SINH)
     private LocalDate ngaySinh;
 
     public static KhachHangDTO loadFromEntity(KhachHang khacHang) {
