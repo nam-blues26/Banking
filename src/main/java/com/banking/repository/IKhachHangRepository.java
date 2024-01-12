@@ -51,4 +51,61 @@ public interface IKhachHangRepository extends JpaRepository<KhachHang,Long > {
 
     @Procedure(procedureName = "searchCustomerById")
     KhachHang searchCustomerById(@Param("id") Long id);
+
+    /**
+     DELIMITER $
+     create procedure updateKhachHang(
+     in i_id bigint,
+     in i_sdt varchar(10),
+     in i_cccd varchar(12),
+     in i_ho_ten nvarchar(20),
+     in i_ngay_sinh date,
+     in i_gioi_tinh varchar(10),
+     out o_result int)
+     begin
+     if (select count(*) from khach_hang where id = i_id) = 0 then set o_result = 2 ;
+     else
+     if length(ltrim(i_sdt)) || length(ltrim(i_cccd))
+     ||length(ltrim(i_ngay_sinh)) || length(ltrim(i_gioi_tinh)) || length(ltrim(i_ho_ten)) = 0 then
+     set o_result = 1;
+     else
+     update khach_hang set
+     ho_ten = i_ho_ten,
+     cccd = i_cccd,
+     gioi_tinh = i_gioi_tinh,
+     ngay_sinh = i_ngay_sinh,
+     sdt = i_sdt
+     where id = i_id;
+     set o_result = 0;
+     end if;
+     end if;
+     end $
+     DELIMITER ;
+     */
+    @Procedure(name = "updateKhachHang")
+    int updateKhachHang(
+            @Param("i_id") Long id,
+            @Param("i_sdt") String sdt,
+            @Param("i_cccd") String cccd,
+            @Param("i_ho_ten") String hoTen,
+            @Param("i_ngay_sinh") LocalDate ngaySinh,
+            @Param("i_gioi_tinh") String gioiTinh
+    );
+
+    /**
+     DELIMITER $
+     create procedure deleteKhachhang(
+     in i_id bigint,
+     out result varchar(20))
+     begin
+     if (select count(*) from khach_hang where id = i_id) = 0 then set result = "khong tim thay user" ;
+     else delete from khach_hang where id = i_id;
+     set result = "xoa thanh cong";
+     end if;
+     end $
+     DELIMITER ;
+     */
+    @Procedure(name = "deleteKhachhang")
+    String deleteKhachhang(@Param("id") Long id );
+
 }

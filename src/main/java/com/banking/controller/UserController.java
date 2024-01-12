@@ -16,10 +16,6 @@ public class UserController {
      * @param id của khách hàng kiểu integer
      * @return chuỗi -> thành công
      */
-    @DeleteMapping
-    public String deleteUser(@PathVariable Integer id) {
-        return userService.deleteUser(id);
-    }
 
     /**
      * Update user theo id
@@ -28,10 +24,4 @@ public class UserController {
      * @param hoTen -> full name của user
      * @return user
      */
-    @PutMapping
-    public User updateUser(@PathVariable Integer id, @PathVariable String userName
-    , @PathVariable String hoTen
-    ) {
-        return userService.updateUser(id, userName, hoTen);
-    }
 }

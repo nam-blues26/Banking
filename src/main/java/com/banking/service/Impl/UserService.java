@@ -53,23 +53,4 @@ public class UserService implements IUserService {
         return null;
     }
     //đăng nhập
-
-    public String deleteUser(Integer id) {
-        return userRepository.deleteUser(id);
-    }
-
-    /**
-     update người dùng theo id
-     id -> id của người dùng
-     user_name -> tên người dùng mới
-     ho_ten -> full name người dùng mới
-     case 1: không tìm thấy người dùng theo id truyền vào -> throw "không tìm thấy user"
-
-     pass -> insert vào bảng user
-     */
-    public User updateUser(Integer id, String userName, String hoTen) {
-       int result = userRepository.updateUser(id, userName, hoTen);
-       if (result == 2) throw new UsernameNotFoundException(MessageConstant.USER_NOT_FOUND);
-        return userRepository.findById(id).get();
-    }
 }

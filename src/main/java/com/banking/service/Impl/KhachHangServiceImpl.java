@@ -3,6 +3,7 @@ package com.banking.service.Impl;
 import com.banking.constant.MessageConstant;
 import com.banking.dto.KhachHangDTO;
 import com.banking.dto.KhachHangRequest;
+import com.banking.entity.User;
 import com.banking.exception.ExistException;
 import com.banking.exception.NotFoundException;
 import com.banking.entity.KhachHang;
@@ -15,6 +16,7 @@ import jakarta.persistence.ParameterMode;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.StoredProcedureQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -82,11 +84,15 @@ public class KhachHangServiceImpl implements IKhachHangService {
      */
     @Override
     public KhachHang updateKhachHang(Long id, KhachHangRequest khachHangRequest) {
-        KhachHang khachhang = khachHangRepository.findKhachHangById(id)
-                .orElseThrow(() -> new NotFoundException(messageService.getMessage(MessageConstant.KH_NOT_FOUND)));
-        khachhang.loadFromDTO(khachHangRequest);
-        return khachHangRepository.save(khachhang);
-
+//        KhachHang khachhang = khachHangRepository.findKhachHangById(id)
+//                .orElseThrow(() -> new NotFoundException(messageService.getMessage(MessageConstant.KH_NOT_FOUND)));
+//        khachhang.loadFromDTO(khachHangRequest);
+//        return khachHangRepository.save(khachhang);
+        int result = khachHangRepository.updateKhachHang(id, khachHangRequest.getSdt(),
+                khachHangRequest.getCccd(), khachHangRequest.getHoTen()
+                , khachHangRequest.getNgaySinh(),khachHangRequest.getGioiTinh().name());
+        if (result == 0) throw new UsernameNotFoundException(MessageConstant.USER_NOT_FOUND);
+        return khachHangRepository.findKhachHangById(id).get();
     }
 
     /**
@@ -96,9 +102,10 @@ public class KhachHangServiceImpl implements IKhachHangService {
      */
     @Override
     public void deleteKhachHang(Long id) {
-        KhachHang khachHang = khachHangRepository.findKhachHangById(id)
-                .orElseThrow(() -> new NotFoundException(messageService.getMessage(MessageConstant.KH_NOT_FOUND)));
-        khachHangRepository.delete(khachHang);
+//        KhachHang khachHang = khachHangRepository.findKhachHangById(id)
+//                .orElseThrow(() -> new NotFoundException(messageService.getMessage(MessageConstant.KH_NOT_FOUND)));
+//        khachHangRepository.delete(khachHang);
+         khachHangRepository.deleteKhachhang(id);
     }
 
     /**
