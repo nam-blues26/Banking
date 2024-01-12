@@ -35,8 +35,8 @@ public class KhachHangController {
             @ApiResponse(responseCode = "403", description = "Không có quyền truy cập")
     })
     @GetMapping()
-    public ResponseEntity<List<KhachHangDTO>> getAll() {
-        List<KhachHangDTO> khachHangList= khachHangService.findAllKhachHang();
+    public ResponseEntity<List<KhachHang>> getAll() {
+        List<KhachHang> khachHangList= khachHangService.findAllKhachHang();
         return new ResponseEntity<>(khachHangList, HttpStatus.OK);
     }
 

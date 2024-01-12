@@ -18,6 +18,7 @@ import jakarta.persistence.StoredProcedureQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -41,9 +42,9 @@ public class KhachHangServiceImpl implements IKhachHangService {
      * @return 1 danh sách khachhangDTO
      */
     @Override
-    public List<KhachHangDTO> findAllKhachHang() {
+    public List<KhachHang> findAllKhachHang() {
 //        return khachHangRepository.findAll().stream().map(KhachHangDTO::loadFromEntity).toList();
-        return khachHangRepository.selectAllKhachHang();
+        return khachHangRepository.selectAllKhachHangBySP();
     }
 
     /**
