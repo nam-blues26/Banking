@@ -53,9 +53,9 @@ public class KhachHangController {
             @ApiResponse(responseCode = "404", description = "Không tìm thấy khách hàng")
     })
     @Parameter(name = "id", description = "nhập id khách hàng")
-    @GetMapping("/{khachHangId}")
+    @GetMapping("/{id}")
     public ResponseEntity<KhachHang> getKhachHangById(
-            @PathVariable(name = "khachHangId") Long id
+            @PathVariable Long id
     ) {
         return new ResponseEntity<>(khachHangService.findKhachHangById(id), HttpStatus.OK);
     }

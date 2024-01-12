@@ -1,7 +1,6 @@
 package com.banking.security.filter;
 
-import com.banking.security.CustomerUserDetails;
-import com.banking.security.CustomerUserDetailsService;
+import com.banking.security.CustomerUserDetailsServiceImpl;
 import com.banking.security.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,18 +9,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.util.Pair;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
@@ -31,7 +26,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private String apiPrefix;
 
     @Autowired
-    private CustomerUserDetailsService userDetailsService;
+    private CustomerUserDetailsServiceImpl userDetailsService;
     @Autowired
     private JwtService jwtService;
 
