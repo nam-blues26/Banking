@@ -65,7 +65,6 @@ public class KhachHangServiceImpl implements IKhachHangService {
                     khachHangRequest.getHoTen(),
                     khachHangRequest.getGioiTinh().name(),
                     khachHangRequest.getNgaySinh());
-
             if (check == false){
                 throw  new ExistException(messageService.getMessage(MessageConstant.KH_CCCD_EXIST));
             }else {
