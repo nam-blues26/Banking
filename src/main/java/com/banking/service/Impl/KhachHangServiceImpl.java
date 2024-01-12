@@ -40,7 +40,8 @@ public class KhachHangServiceImpl implements IKhachHangService {
      */
     @Override
     public List<KhachHangDTO> findAllKhachHang() {
-        return khachHangRepository.findAll().stream().map(KhachHangDTO::loadFromEntity).toList();
+//        return khachHangRepository.findAll().stream().map(KhachHangDTO::loadFromEntity).toList();
+        return khachHangRepository.selectAllKhachHang();
     }
 
     /**
@@ -108,8 +109,16 @@ public class KhachHangServiceImpl implements IKhachHangService {
      */
     @Override
     public KhachHang findKhachHangById(Long id) {
-        KhachHang khachHang = khachHangRepository.findKhachHangById(id)
-                .orElseThrow(() -> new NotFoundException(messageService.getMessage(MessageConstant.KH_NOT_FOUND)));
+//        KhachHang khachHang = khachHangRepository.findKhachHangById(id)
+//                .orElseThrow(() -> new NotFoundException(messageService.getMessage(MessageConstant.KH_NOT_FOUND)));
+//
+//        return khachHang;
+
+        KhachHang khachHang = khachHangRepository.searchCustomerById(id);
+
+        if (khachHang == null) {
+            throw new NotFoundException(messageService.getMessage(MessageConstant.KH_NOT_FOUND));
+        }
 
         return khachHang;
     }

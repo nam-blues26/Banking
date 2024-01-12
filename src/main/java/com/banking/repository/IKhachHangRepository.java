@@ -1,5 +1,6 @@
 package com.banking.repository;
 
+import com.banking.dto.KhachHangDTO;
 import com.banking.entity.KhachHang;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
@@ -7,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 // class extends JpaRepository kế thừa các phương thức tiện ích của hibernate
@@ -43,4 +45,10 @@ public interface IKhachHangRepository extends JpaRepository<KhachHang,Long > {
             @Param("in_p_gioiTinh") String gioiTinh,
             @Param("in_p_ngaySinh") LocalDate ngaySinh
     );
+
+    @Procedure(procedureName = "SelectAllKhachHang")
+    List<KhachHangDTO> selectAllKhachHang();
+
+    @Procedure(procedureName = "searchCustomerById")
+    KhachHang searchCustomerById(@Param("id") Long id);
 }
