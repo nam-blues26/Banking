@@ -38,8 +38,9 @@ public interface IKhachHangRepository extends JpaRepository<KhachHang,Long > {
      * @param gioiTinh
      * @param ngaySinh
      */
-    @Procedure(procedureName = "ThemKhachHang", outputParameterName = "out_check_insert")
-    Boolean themKhachHang(
+//    @Procedure(procedureName = "ThemKhachHang", outputParameterName = "out_check_insert")
+    @Query(value = "CALL ThemKhachHang(:in_p_sdt,:in_p_cccd,:in_p_hoTen,:in_p_gioiTinh,:in_p_ngaySinh);", nativeQuery = true)
+    Optional<KhachHang> themKhachHang(
             @Param("in_p_sdt") String sdt,
             @Param("in_p_cccd") String cccd,
             @Param("in_p_hoTen") String hoTen,
@@ -109,7 +110,8 @@ public interface IKhachHangRepository extends JpaRepository<KhachHang,Long > {
      end $
      DELIMITER ;
      */
-    @Procedure(name = "deleteKhachhang")
-    String deleteKhachhang(@Param("i_id") Long id );
+    @Procedure(procedureName = "ThemKhachHang", outputParameterName = "out_check_delete")
+    //    @Query(value = "CALL deleteKhachhang(:i_id);", nativeQuery = true)
+    Boolean deleteKhachhang(@Param("i_id") Long id );
 
 }

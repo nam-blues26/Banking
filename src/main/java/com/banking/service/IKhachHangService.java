@@ -12,6 +12,6 @@ public interface IKhachHangService {
     List<KhachHang> findAllKhachHang();
     KhachHang insertKhachHang(KhachHangRequest khachHangRequest);
     KhachHang updateKhachHang(Long id, KhachHangRequest khachHangRequest);
-    void deleteKhachHang(Long id);
+    Boolean deleteKhachHang(Long id);
     KhachHang findKhachHangById(Long id);
 }

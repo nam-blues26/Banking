@@ -119,7 +119,6 @@ public class KhachHangController {
     public ResponseEntity<Boolean> deleteKhachHang(
             @PathVariable Long id
     ){
-        khachHangService.deleteKhachHang(id);
-        return new ResponseEntity<>(true, HttpStatus.OK);
+        return new ResponseEntity<>(khachHangService.deleteKhachHang(id), HttpStatus.OK);
     }
 }

@@ -11,17 +11,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.time.LocalDate;
 
 @SpringBootApplication
-public class BankingApplication implements CommandLineRunner{
+public class BankingApplication{
 
     public static void main(String[] args) {
         SpringApplication.run(BankingApplication.class, args);
     }
 
-    @Autowired
-    private IKhachHangRepository userRepository;
-
-    @Override
-    public void run(String... args) throws Exception {
-        userRepository.deleteKhachhang(Long.valueOf(2));
-    }
 }

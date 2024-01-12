@@ -62,19 +62,14 @@ public class KhachHangServiceImpl implements IKhachHangService {
 //
 //            return khachHangRepository.save(MapperUtils.dtoToEntity(khachHangRequest, KhachHang.class));
 //        }
-            Boolean check = khachHangRepository.themKhachHang(
+            Optional<KhachHang> khachHang= khachHangRepository.themKhachHang(
                     khachHangRequest.getSdt(),
                     khachHangRequest.getCccd(),
                     khachHangRequest.getHoTen(),
                     khachHangRequest.getGioiTinh().name(),
                     khachHangRequest.getNgaySinh());
-            if (check == false){
-                throw  new ExistException(messageService.getMessage(MessageConstant.KH_CCCD_EXIST));
-            }else {
-                KhachHang khachHang = khachHangRepository.findKhachHangByCccd(khachHangRequest.getCccd())
-                        .orElseThrow(() -> new NotFoundException(messageService.getMessage(MessageConstant.KH_NOT_FOUND)));
-                return khachHang;
-            }
+
+            return khachHang.get();
     }
 
     /**
@@ -102,11 +97,16 @@ public class KhachHangServiceImpl implements IKhachHangService {
      *           case 2 : tìm thấy khách hàng với id truyền vào -> delete vào db
      */
     @Override
-    public void deleteKhachHang(Long id) {
+    public Boolean deleteKhachHang(Long id) {
 //        KhachHang khachHang = khachHangRepository.findKhachHangById(id)
 //                .orElseThrow(() -> new NotFoundException(messageService.getMessage(MessageConstant.KH_NOT_FOUND)));
 //        khachHangRepository.delete(khachHang);
-         khachHangRepository.deleteKhachhang(id);
+         Boolean check = khachHangRepository.deleteKhachhang(id);
+         if (check == true){
+             return true;
+         }else {
+             return false;
+         }
     }
 
     /**
