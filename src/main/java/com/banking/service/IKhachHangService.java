@@ -9,7 +9,7 @@ import java.util.List;
 public interface IKhachHangService {
 
 
-    List<KhachHangDTO> findAllKhachHang();
+    List<KhachHang> findAllKhachHang();
     KhachHang insertKhachHang(KhachHangRequest khachHangRequest);
     KhachHang updateKhachHang(Long id, KhachHangRequest khachHangRequest);
     void deleteKhachHang(Long id);

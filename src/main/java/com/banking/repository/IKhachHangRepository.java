@@ -3,6 +3,7 @@ package com.banking.repository;
 import com.banking.dto.KhachHangDTO;
 import com.banking.entity.KhachHang;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -46,11 +47,14 @@ public interface IKhachHangRepository extends JpaRepository<KhachHang,Long > {
             @Param("in_p_ngaySinh") LocalDate ngaySinh
     );
 
-    @Procedure(procedureName = "SelectAllKhachHang")
-    List<KhachHangDTO> selectAllKhachHang();
+//    @Procedure(procedureName = "SelectAllKhachHang")
+    @Query(value = "CALL SelectAllKhachHang()", nativeQuery = true)
+    List<KhachHang> selectAllKhachHangBySP();
 
-    @Procedure(procedureName = "searchCustomerById")
-    KhachHang searchCustomerById(@Param("id") Long id);
+
+//    @Procedure(procedureName = "searchCustomerById")
+    @Query(value = "CALL searchCustomerById(:inputId);", nativeQuery = true)
+    KhachHang searchCustomerById(@Param("inputId") Long id);
 
     /**
      DELIMITER $
@@ -106,6 +110,6 @@ public interface IKhachHangRepository extends JpaRepository<KhachHang,Long > {
      DELIMITER ;
      */
     @Procedure(name = "deleteKhachhang")
-    String deleteKhachhang(@Param("id") Long id );
+    String deleteKhachhang(@Param("i_id") Long id );
 
 }
