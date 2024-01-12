@@ -1,5 +1,6 @@
 package com.banking.service.Impl;
 
+import com.banking.constant.MessageConstant;
 import com.banking.dto.AuthencationDTO;
 import com.banking.dto.TokenDTO;
 import com.banking.dto.UserDTO;
@@ -10,6 +11,8 @@ import com.banking.repository.IUserRepository;
 import com.banking.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +25,6 @@ public class UserService implements IUserService {
 
     @Autowired
     private IRoleRepository roleRepo;
-
-    @Value("${user.username.exist}")
-    private String userExist;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -45,11 +45,31 @@ public class UserService implements IUserService {
 //            userCheck.get().setRole(roleRepo.findById(1).get());
             return userRepository.save(userCheck.get());
         }
-        throw new ExistException(userExist);    }
+        throw new ExistException(MessageConstant.USER_NOT_FOUND);
+    }
 
     @Override
     public TokenDTO login(AuthencationDTO authencationDTO) {
         return null;
     }
     //đăng nhập
+
+    public String deleteUser(Integer id) {
+        return userRepository.deleteUser(id);
+    }
+
+    /**
+     update người dùng theo id
+     id -> id của người dùng
+     user_name -> tên người dùng mới
+     ho_ten -> full name người dùng mới
+     case 1: không tìm thấy người dùng theo id truyền vào -> throw "không tìm thấy user"
+
+     pass -> insert vào bảng user
+     */
+    public User updateUser(Integer id, String userName, String hoTen) {
+       int result = userRepository.updateUser(id, userName, hoTen);
+       if (result == 2) throw new UsernameNotFoundException(MessageConstant.USER_NOT_FOUND);
+        return userRepository.findById(id).get();
+    }
 }
