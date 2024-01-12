@@ -21,6 +21,7 @@ import java.time.LocalDate;
 // Hàm loadFromDTO chuyển đỗi dữ liệu từ khachhangDTO sang khachhang
 // Tham số nhận vào là 1 khachhangDTO
 @Entity
+@Table
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

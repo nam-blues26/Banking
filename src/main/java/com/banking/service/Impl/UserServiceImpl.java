@@ -69,16 +69,6 @@ public class UserServiceImpl implements IUserService {
         return userRepository.saveAndFlush(user);
     }
 
-    @Override
-    public String deleteUser(Integer id) {
-        return null;
-    }
-
-    @Override
-    public User updateUser(Integer id, String userName, String hoTen) {
-        return null;
-    }
-
     /**
      *
      * @param authencationDTO : username, password

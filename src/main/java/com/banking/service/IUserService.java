@@ -8,8 +8,5 @@ import org.springframework.data.repository.query.Param;
 
 public interface IUserService {
      User addUser(UserDTO user);
-     String deleteUser(Integer id);
-     User updateUser(Integer id,String userName,String hoTen);
-
      TokenDTO login(AuthencationDTO authencationDTO);
 }
