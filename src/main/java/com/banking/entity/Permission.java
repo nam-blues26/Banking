@@ -15,5 +15,6 @@ public class Permission {
     private Long id;
 
     @Column(name = "permission_name")
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private PermissionType name;
 }
