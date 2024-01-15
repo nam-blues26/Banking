@@ -1,11 +1,9 @@
 package com.banking.service.Impl;
 
 import com.banking.constant.MessageConstant;
-import com.banking.constant.AuthConstant;
 import com.banking.dto.AuthencationDTO;
 import com.banking.dto.TokenDTO;
 import com.banking.dto.UserDTO;
-import com.banking.dto.UsernameFilter;
 import com.banking.entity.Role;
 import com.banking.entity.RoleType;
 import com.banking.entity.User;
@@ -24,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -51,6 +50,7 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
 
     /**
      * Thêm user
@@ -139,9 +139,10 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public User userDetail(Integer id) {
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
         User user = userRepository.findById(id).
                 orElseThrow(() -> new NotFoundException(messageService.getMessage(MessageConstant.USER_NOT_FOUND)));
-        if(!UsernameFilter.nameFilter.equals(user.getUsername())){
+        if(!SecurityContextHolder.getContext().getAuthentication().getName().equals(user.getUsername())){
            throw new UnauthorizedException(messageService.getMessage(MessageConstant.USER_UNAUTHORIZED));
         }
         return user;

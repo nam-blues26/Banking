@@ -1,6 +1,5 @@
 package com.banking.security.filter;
 
-import com.banking.dto.UsernameFilter;
 import com.banking.security.CustomerUserDetailsServiceImpl;
 import com.banking.security.JwtService;
 import jakarta.servlet.FilterChain;
@@ -65,7 +64,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                                 );
                         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                        UsernameFilter.nameFilter = username;
                     }
                 }
             }
