@@ -21,7 +21,6 @@ import java.util.*;
 @Entity
 @Table(name = "USERS")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

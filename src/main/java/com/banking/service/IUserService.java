@@ -9,10 +9,15 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface IUserService {
-     User addUser(UserDTO user);
-     TokenDTO login(AuthencationDTO authencationDTO);
+    User addUser(UserDTO user);
 
-     List<User> viewAllUser();
+    TokenDTO login(AuthencationDTO authencationDTO);
 
-     User userDetail(Integer id);
+    User updateUser(Integer id, UserDTO userDTO);
+
+    void deleteUser(Integer id);
+
+    List<User> viewAllUser();
+
+    User userDetail(Integer id);
 }

@@ -40,4 +40,6 @@ public class MessageConstant {
 
     //Sai mật khẩu hoăc tên đăng nhập
     public static final String LOGIN_FAILL ="user.login.fail";
+
+    public static final String DELETE_SUSSCES = "delete sussces";
 }

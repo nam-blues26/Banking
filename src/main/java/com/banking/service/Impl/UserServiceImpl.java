@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -70,7 +71,6 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
-     *
      * @param authencationDTO : username, password
      * @return Thông tin người dùng và token
      */
@@ -78,7 +78,7 @@ public class UserServiceImpl implements IUserService {
     public TokenDTO login(AuthencationDTO authencationDTO) {
         User user = userRepository.findByUsername(authencationDTO.getUsername())
                 .orElseThrow(() -> new NotFoundException(messageService.getMessage(MessageConstant.USER_NOT_FOUND)));
-        if (!passwordEncoder.matches(authencationDTO.getPassword(), user.getPassword())){
+        if (!passwordEncoder.matches(authencationDTO.getPassword(), user.getPassword())) {
             throw new BadCredentialsException(messageService.getMessage(MessageConstant.LOGIN_FAILL));
         }
         CustomerUserDetails customerUserDetail = new CustomerUserDetails(user);
@@ -91,9 +91,36 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
+     * Update user theo id
      *
-     * @return 1 list danh sách user
+     * @param userDTO gồm thông tin: username, fullname, password, ngaysinh
+     * @return User
      */
+    @Override
+    public User updateUser(Integer id, UserDTO userDTO) {
+        if (2023 - userDTO.getNgaySinh().getYear() <= 18)
+            System.out.println("> 18 age");
+        User user = User.builder()
+                .id(id)
+                .fullName(userDTO.getFullname())
+                .username(userDTO.getUsername())
+                .ngaySinh(userDTO.getNgaySinh())
+                .build();
+        return userRepository.save(user);
+    }
+
+    /**
+     * Delete user theo id
+     *
+     * @param id -> id của user
+     */
+    @Override
+    public void deleteUser(Integer id) {
+        if (userRepository.findById(id).isPresent())
+            userRepository.deleteById(id);
+        throw new NotFoundException(MessageConstant.USER_NOT_FOUND);
+    }
+
     @Override
     public List<User> viewAllUser() {
         return userRepository.findAll();
