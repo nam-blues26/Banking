@@ -25,12 +25,12 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NotBlank(message = "${user.fullName.notnull}")
+    @NotBlank(message = "${user.fullName.notBlack}")
     private String fullName;
-    @NotBlank(message = "${user.username.notnull}")
+    @NotBlank(message = "${user.username.notBlack}")
     private String username;
     private LocalDate ngaySinh;
-    @NotBlank(message = "${user.password.notnull}")
+    @NotBlank(message = "${user.password.notBlack}")
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
