@@ -75,13 +75,15 @@ public class SecurityConfig extends Exception {
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(r -> {
-                    r.requestMatchers(GET,String.format("%s/khach-hang/**", apiPrefix))
+                    r.requestMatchers(GET,String.format("%s/user/detail-user/**", apiPrefix))
                             .hasAnyAuthority(RoleType.ROLE_ADMIN.toString(),RoleType.ROLE_USER.toString()); // có quyền ADMIN và USER
-                    r.requestMatchers(POST,String.format("%s/khach-hang/**", apiPrefix))
-                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString(),RoleType.ROLE_USER.toString()); // có quyền ADMIN và USER
-                    r.requestMatchers(PUT,String.format("%s/khach-hang/**", apiPrefix))
+                    r.requestMatchers(GET,String.format("%s/user/get-all-user", apiPrefix))
                             .hasAnyAuthority(RoleType.ROLE_ADMIN.toString());                               // có quyền ADMIN
-                    r.requestMatchers(DELETE,String.format("%s/khach-hang/**", apiPrefix))
+                    r.requestMatchers(POST,String.format("%s/user/**", apiPrefix))
+                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString());                               // có quyền ADMIN
+                    r.requestMatchers(PUT,String.format("%s/user/**", apiPrefix))
+                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString());                               // có quyền ADMIN
+                    r.requestMatchers(DELETE,String.format("%s/user/**", apiPrefix))
                             .hasAnyAuthority(RoleType.ROLE_ADMIN.toString());                               // có quyền ADMIN
                     r.anyRequest().permitAll();                                                             // những request còn lại không cần quyền
                 });

@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @Tag(name = "User", description = "User APIs")
-@RequestMapping("api/v1")
+@RequestMapping("${project.bank.version.v1}/user")
 public class UserController {
     @Autowired
     private IUserService userService;
