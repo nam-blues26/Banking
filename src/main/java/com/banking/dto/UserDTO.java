@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 /**
  * DTO của người dùng
  */
@@ -20,5 +22,7 @@ public class UserDTO {
 
     @NotBlank
     private String password;
+
+    private LocalDate ngaySinh;
 
 }

@@ -7,6 +7,11 @@ import com.banking.entity.User;
 import org.springframework.data.repository.query.Param;
 
 public interface IUserService {
-     User addUser(UserDTO user);
-     TokenDTO login(AuthencationDTO authencationDTO);
+    User addUser(UserDTO user);
+
+    TokenDTO login(AuthencationDTO authencationDTO);
+
+    User updateUser(Integer id, UserDTO userDTO);
+
+    void deleteUser(Integer id);
 }
