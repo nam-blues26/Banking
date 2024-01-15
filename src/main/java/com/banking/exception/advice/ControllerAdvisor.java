@@ -1,5 +1,6 @@
 package com.banking.exception.advice;
 
+import com.banking.exception.DOBException;
 import com.banking.exception.ErrorResponse;
 import com.banking.exception.ExistException;
 import com.banking.exception.NotFoundException;
@@ -43,29 +44,38 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-    /* - Phương thức xử lý các RuntimeException trong ứng dụng
-       - Khi một RuntimeException xảy ra phương thức sẽ tạo ra 1 ErrorResponse lỗi xảy ra
-       - Sau đó tạo ra một ResponseEntity chứa thông tin lỗi trong đối tượng ErrorResponse trả về cho client với mã lỗi
-         là HttpStatus.BAD_REQUEST */
-//    @ExceptionHandler(RuntimeException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ResponseEntity<Object> handleBindException(
-//            RuntimeException ex, HttpHeaders headers,
-//            HttpStatusCode statusCode,
-//            WebRequest request) {
-//
-//        ErrorResponse errorResponse = new ErrorResponse(
-//                HttpStatus.BAD_REQUEST.value(),
-//                new Date(),
-//                List.of(ex.getMessage()),
-//                request.getDescription(false)
-//        );
-//
-//        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-//    }
+    /**
+     * Bắt Exception DOBException (400)
+     * @param ex
+     * @param request
+     * @return ErrorResponse
+     */
+    @ExceptionHandler(DOBException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Object> handleBindException(
+            RuntimeException ex,
+            WebRequest request) {
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                new Date(),
+                List.of(ex.getMessage()),
+                request.getDescription(false)
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+
+    /**
+     * Bắt Exception ExistException (409)
+     * @param ex
+     * @param request
+     * @return ErrorResponse
+     */
     @ExceptionHandler(ExistException.class)
     @ResponseStatus(HttpStatus.CONFLICT) //409
-    public ErrorResponse ExistHandler(ExistException ex, WebRequest request){
+    public ErrorResponse ExistHandler(ExistException ex, WebRequest request) {
         return new ErrorResponse(
                 HttpStatus.CONFLICT.value(),
                 new Date(),
@@ -74,9 +84,16 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         );
     }
 
+    /**
+     * Bắt exception NotFound (404)
+     *
+     * @param ex
+     * @param request
+     * @return ErrorResponse
+     */
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse NotFoundHandler(NotFoundException ex, WebRequest request){
+    public ErrorResponse NotFoundHandler(NotFoundException ex, WebRequest request) {
         return new ErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
                 new Date(),
@@ -85,9 +102,17 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         );
     }
 
+
+    /**
+     * Bắt exception BadCredentialsException (403)
+     *
+     * @param ex
+     * @param request
+     * @return ErrorResponse
+     */
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ErrorResponse BadCredentialsHandler(BadCredentialsException ex, WebRequest request){
+    public ErrorResponse BadCredentialsHandler(BadCredentialsException ex, WebRequest request) {
         return new ErrorResponse(
                 HttpStatus.FORBIDDEN.value(),
                 new Date(),

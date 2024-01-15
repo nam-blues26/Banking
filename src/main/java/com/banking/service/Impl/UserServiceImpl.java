@@ -8,6 +8,7 @@ import com.banking.dto.UserDTO;
 import com.banking.entity.Role;
 import com.banking.entity.RoleType;
 import com.banking.entity.User;
+import com.banking.exception.DOBException;
 import com.banking.exception.ExistException;
 import com.banking.exception.NotFoundException;
 import com.banking.repository.IRoleRepository;
@@ -25,6 +26,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -62,6 +64,7 @@ public class UserServiceImpl implements IUserService {
         if (userCheck.isPresent()) {
             throw new ExistException(messageService.getMessage(MessageConstant.USER_EXIST));
         }
+        this.checkDOB(userDTO.getNgaySinh());
 
         List<Role> roles = Arrays.asList(roleRepository.findByName(RoleType.ROLE_USER).get());
         User user = MapperUtils.dtoToEntity(userDTO, User.class);
@@ -98,11 +101,10 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public User updateUser(Integer id, UserDTO userDTO) {
-        if (2023 - userDTO.getNgaySinh().getYear() <= 18)
-            System.out.println("> 18 age");
+        this.checkDOB(userDTO.getNgaySinh());
         User user = User.builder()
                 .id(id)
-                .fullName(userDTO.getFullname())
+                .fullName(userDTO.getFullName())
                 .username(userDTO.getUsername())
                 .ngaySinh(userDTO.getNgaySinh())
                 .build();
@@ -138,5 +140,17 @@ public class UserServiceImpl implements IUserService {
         User user = userRepository.findById(id).
                 orElseThrow(() -> new NotFoundException(messageService.getMessage(MessageConstant.USER_NOT_FOUND)));
         return user;
+    }
+
+    /**
+     * Validate ngày sinh
+     * @param dob Biến có kiểu LocalDate
+     */
+    public void checkDOB(LocalDate dob){
+        LocalDate currentDate = LocalDate.now();
+        LocalDate currentDateMinus18years = currentDate.minusYears(18);
+        if (dob.isAfter(currentDateMinus18years)){
+            throw new DOBException(messageService.getMessage(MessageConstant.USER_DOB_INVALID));
+        }
     }
 }
