@@ -118,6 +118,7 @@ public class UserServiceImpl implements IUserService {
     public void deleteUser(Integer id) {
         if (userRepository.findById(id).isPresent())
             userRepository.deleteById(id);
+        System.out.println("d");
         throw new NotFoundException(MessageConstant.USER_NOT_FOUND);
     }
 }
