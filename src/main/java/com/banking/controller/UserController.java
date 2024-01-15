@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @Tag(name = "User", description = "User APIs")
-@RequestMapping("api/v1")
+@RequestMapping("${project.bank.version.v1}/user")
 public class UserController {
     @Autowired
     private IUserService userService;
@@ -36,7 +36,7 @@ public class UserController {
      * @param
      * @return Thông tin user vừa thêm
      */
-    @PostMapping("{id}")
+    @PostMapping("")
     public ResponseEntity addUser(@RequestBody @Valid UserDTO userDTO) {
         return ResponseEntity.ok().body(userService.addUser(userDTO));
     }

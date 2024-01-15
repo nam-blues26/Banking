@@ -17,16 +17,16 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
-    @NotBlank(message = "${user.fullName.notBlack}")
+    @NotBlank(message = "{user.fullName.notBlack}")
     private String fullName;
-    @NotBlank(message = "${user.username.notBlack}")
+    @NotBlank(message = "{user.username.notBlack}")
     private String username;
-    @NotBlank(message = "${user.password.notBlack}")
+    @NotBlank(message = "{user.password.notBlack}")
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d).{4,}$", message = "user.password.regix")
     private String password;
 
-    @NotNull(message = "${user.dob.notNull}")
-    @Past(message = "${user.dob.invalid}")
+    @NotNull(message = "{user.dob.notNull}")
+    @Past(message = "{user.dob.invalid}")
     private LocalDate ngaySinh;
 
 
