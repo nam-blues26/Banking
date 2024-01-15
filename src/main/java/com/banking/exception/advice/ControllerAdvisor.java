@@ -4,6 +4,7 @@ import com.banking.exception.DOBException;
 import com.banking.exception.ErrorResponse;
 import com.banking.exception.ExistException;
 import com.banking.exception.NotFoundException;
+import com.banking.exception.UnauthorizedException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -53,7 +54,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DOBException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> handleBindException(
-            RuntimeException ex,
+            DOBException ex,
             WebRequest request) {
 
         ErrorResponse errorResponse = new ErrorResponse(
@@ -113,6 +114,24 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorResponse BadCredentialsHandler(BadCredentialsException ex, WebRequest request) {
+        return new ErrorResponse(
+                HttpStatus.FORBIDDEN.value(),
+                new Date(),
+                List.of(ex.getMessage()),
+                request.getDescription(false)
+        );
+    }
+
+    /**
+     * Bắt exception UnauthorizedException (403)
+     *
+     * @param ex
+     * @param request
+     * @return ErrorResponse
+     */
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse UnauthorizedException(UnauthorizedException ex, WebRequest request) {
         return new ErrorResponse(
                 HttpStatus.FORBIDDEN.value(),
                 new Date(),

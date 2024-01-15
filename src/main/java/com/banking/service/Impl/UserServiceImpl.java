@@ -5,12 +5,14 @@ import com.banking.constant.AuthConstant;
 import com.banking.dto.AuthencationDTO;
 import com.banking.dto.TokenDTO;
 import com.banking.dto.UserDTO;
+import com.banking.dto.UsernameFilter;
 import com.banking.entity.Role;
 import com.banking.entity.RoleType;
 import com.banking.entity.User;
 import com.banking.exception.DOBException;
 import com.banking.exception.ExistException;
 import com.banking.exception.NotFoundException;
+import com.banking.exception.UnauthorizedException;
 import com.banking.repository.IRoleRepository;
 import com.banking.repository.IUserRepository;
 import com.banking.security.CustomerUserDetails;
@@ -139,6 +141,9 @@ public class UserServiceImpl implements IUserService {
     public User userDetail(Integer id) {
         User user = userRepository.findById(id).
                 orElseThrow(() -> new NotFoundException(messageService.getMessage(MessageConstant.USER_NOT_FOUND)));
+        if(!UsernameFilter.nameFilter.equals(user.getUsername())){
+           throw new UnauthorizedException(messageService.getMessage(MessageConstant.USER_UNAUTHORIZED));
+        }
         return user;
     }
 
