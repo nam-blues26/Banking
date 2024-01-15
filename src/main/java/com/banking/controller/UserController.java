@@ -36,7 +36,7 @@ public class UserController {
      * @param
      * @return Thông tin user vừa thêm
      */
-    @PostMapping("{id}")
+    @PostMapping("")
     public ResponseEntity addUser(@RequestBody @Valid UserDTO userDTO) {
         return ResponseEntity.ok().body(userService.addUser(userDTO));
     }
