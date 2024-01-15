@@ -42,4 +42,6 @@ public class MessageConstant {
     public static final String LOGIN_FAILL ="user.login.fail";
 
     public static final String DELETE_SUSSCES = "delete sussces";
+
+    public static final String USER_DOB_INVALID = "user.dob.invalid";
 }
