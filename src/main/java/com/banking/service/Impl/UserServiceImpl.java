@@ -118,7 +118,25 @@ public class UserServiceImpl implements IUserService {
     public void deleteUser(Integer id) {
         if (userRepository.findById(id).isPresent())
             userRepository.deleteById(id);
-        System.out.println("d");
         throw new NotFoundException(MessageConstant.USER_NOT_FOUND);
+    }
+
+    @Override
+    public List<User> viewAllUser() {
+        return userRepository.findAll();
+    }
+
+    /**
+     *
+     * @param id -> Truyền vào id của User kiểu dữ liệu Integer
+     *           case1: Truyền id nếu tìm thấy user trả về 1 User
+     *           case2: Truyền id nếu không tìm thấy id trả về 1 class exception NotFoundException
+     * @return trả về 1 User
+     */
+    @Override
+    public User userDetail(Integer id) {
+        User user = userRepository.findById(id).
+                orElseThrow(() -> new NotFoundException(messageService.getMessage(MessageConstant.USER_NOT_FOUND)));
+        return user;
     }
 }

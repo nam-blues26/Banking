@@ -6,6 +6,8 @@ import com.banking.dto.UserDTO;
 import com.banking.entity.User;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface IUserService {
     User addUser(UserDTO user);
 
@@ -14,4 +16,8 @@ public interface IUserService {
     User updateUser(Integer id, UserDTO userDTO);
 
     void deleteUser(Integer id);
+
+    List<User> viewAllUser();
+
+    User userDetail(Integer id);
 }
