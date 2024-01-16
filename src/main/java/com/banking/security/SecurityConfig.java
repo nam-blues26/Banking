@@ -2,8 +2,10 @@ package com.banking.security;
 
 //import com.banking.security.filter.JwtTokenFilter;
 
+import com.banking.entity.Role;
 import com.banking.entity.RoleType;
 import com.banking.security.filter.JwtTokenFilter;
+import com.banking.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +23,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.http.HttpMethod.*;
 
@@ -28,8 +32,13 @@ import static org.springframework.http.HttpMethod.*;
 @EnableWebSecurity
 public class SecurityConfig extends Exception {
 
+    private static List<Role> roleList;
+
     @Value("${project.bank.version.v1}")
     private String apiPrefix;
+
+    @Autowired
+    private IRoleService roleService;
 
     @Autowired
     private CustomerUserDetailsServiceImpl userDetailsService;
@@ -73,22 +82,30 @@ public class SecurityConfig extends Exception {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        roleList = roleService.getAll();
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(r -> {
-                    r.requestMatchers(GET,String.format("%s/user/detail-user/**", apiPrefix))
-                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString(),RoleType.ROLE_USER.toString()); // có quyền ADMIN và USER
-                    r.requestMatchers(GET,String.format("%s/user/get-all-user", apiPrefix))
-                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString());                               // có quyền ADMIN
-                    r.requestMatchers(POST,String.format("%s/user/**", apiPrefix))
-                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString());                               // có quyền ADMIN
-                    r.requestMatchers(PUT,String.format("%s/user/**", apiPrefix))
-                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString());                               // có quyền ADMIN
-                    r.requestMatchers(DELETE,String.format("%s/user/**", apiPrefix))
-                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString());                               // có quyền ADMIN
+                    roleList.forEach(role -> {
+                        role.getPermissions().forEach(permission -> {
+                            r.requestMatchers(permission.getMethod().toString(), String.format("%s%s", apiPrefix, permission.getEndPoint()))
+                                    .hasAnyAuthority(permission.getName().toString()); // có quyền ADMIN và USER
+                        });
+                    });
+//                    r.requestMatchers(GET,String.format("%s/user/detail-user/**", apiPrefix))
+//                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString(),RoleType.ROLE_USER.toString()); // có quyền ADMIN và USER
+//                    r.requestMatchers(GET,String.format("%s/user/get-all-user", apiPrefix))
+//                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString());                               // có quyền ADMIN
+//                    r.requestMatchers(POST,String.format("%s/user/**", apiPrefix))
+//                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString());                               // có quyền ADMIN
+//                    r.requestMatchers(PUT,String.format("%s/user/**", apiPrefix))
+//                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString());                               // có quyền ADMIN
+//                    r.requestMatchers(DELETE,String.format("%s/user/**", apiPrefix))
+//                            .hasAnyAuthority(RoleType.ROLE_ADMIN.toString());                               // có quyền ADMIN
                     r.anyRequest().permitAll();                                                             // những request còn lại không cần quyền
                 });
         return http.build();
     }
+
 }
