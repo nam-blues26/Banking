@@ -66,7 +66,7 @@ public class UserServiceImpl implements IUserService {
         if (userCheck.isPresent()) {
             throw new ExistException(messageService.getMessage(MessageConstant.USER_EXIST));
         }
-        this.checkDOB(userDTO.getNgaySinh());
+        this.checkDOB(userDTO.getNgaySinh()); //2002-6-26
 
         List<Role> roles = Arrays.asList(roleRepository.findByName(RoleType.ROLE_USER).get());
         User user = MapperUtils.dtoToEntity(userDTO, User.class);
@@ -139,10 +139,16 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public User userDetail(Integer id) {
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
+        String getUsernameContext = SecurityContextHolder.getContext().getAuthentication().getName();
+        String getAuthorContext = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findFirst().get().toString();
+//        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
+//        System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findFirst().get());
+//        System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains("ROLE_USER"));
+
         User user = userRepository.findById(id).
                 orElseThrow(() -> new NotFoundException(messageService.getMessage(MessageConstant.USER_NOT_FOUND)));
-        if(!SecurityContextHolder.getContext().getAuthentication().getName().equals(user.getUsername())){
+        if(!getUsernameContext.equals(user.getUsername())
+            && getAuthorContext.equals(RoleType.ROLE_USER.toString())){
            throw new UnauthorizedException(messageService.getMessage(MessageConstant.USER_UNAUTHORIZED));
         }
         return user;
