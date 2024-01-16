@@ -25,9 +25,7 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private RoleType name;
 
-
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "role_permission",
             joinColumns = @JoinColumn(name = "role_id"),
