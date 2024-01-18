@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,27 @@ import java.util.List;
 
 @RestController
 @Tag(name = "User", description = "User APIs")
-@RequestMapping("api/v1")
+@RequestMapping("${project.bank.version.v1}/user")
 public class UserController {
     @Autowired
     private IUserService userService;
+
+
+    @Operation(summary = "API Thêm user", description = "trả về trạng thái thêm thành công")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Thành công trả về User"),
+            @ApiResponse(responseCode = "409", description = "tìm thấy người dùng đã tồn tại")
+    })
+    /**
+     * Thêm user
+     *
+     * @param
+     * @return Thông tin user vừa thêm
+     */
+    @PostMapping("")
+    public ResponseEntity addUser(@RequestBody @Valid UserDTO userDTO) {
+        return ResponseEntity.ok().body(userService.addUser(userDTO));
+    }
 
     @Operation(summary = "API Xóa user theo id", description = "trả về trạng thái xóa thành công")
     @ApiResponses(value = {

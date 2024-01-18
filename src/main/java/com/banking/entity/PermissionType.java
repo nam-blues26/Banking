@@ -9,4 +9,6 @@ public enum PermissionType {
     UPDATE_USER, // update user
 
     VIEW_USER_DETAILS, // xem thông tin cá nhân user
+
+    DELETE_USER // xóa thông tin user
 }

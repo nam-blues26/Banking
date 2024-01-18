@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Customer User khi implement UserDetails
@@ -27,7 +28,12 @@ public class CustomerUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return user.getRoles()
                 .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName().toString()))
+                .flatMap(role -> Stream.concat(
+                        Stream.of(new SimpleGrantedAuthority( role.getName().toString())),
+                        role.getPermissions()
+                                .stream()
+                                .map(permission -> new SimpleGrantedAuthority(permission.getName().toString()))
+                ))
                 .collect(Collectors.toList());
     }
 
