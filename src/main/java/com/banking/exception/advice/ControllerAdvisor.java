@@ -1,10 +1,6 @@
 package com.banking.exception.advice;
 
-import com.banking.exception.DOBException;
-import com.banking.exception.ErrorResponse;
-import com.banking.exception.ExistException;
-import com.banking.exception.NotFoundException;
-import com.banking.exception.UnauthorizedException;
+import com.banking.exception.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -67,7 +63,21 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(LichSuNotNullException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Object> LichSuNotNullException(
+            LichSuNotNullException ex,
+            WebRequest request) {
 
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                new Date(),
+                List.of(ex.getMessage()),
+                request.getDescription(false)
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
     /**
      * Bắt Exception ExistException (409)
      * @param ex
