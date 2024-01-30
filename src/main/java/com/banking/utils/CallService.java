@@ -2,7 +2,10 @@ package com.banking.utils;
 
 import com.banking.dto.LichSuGiaoDichDTO;
 import com.banking.dto.LichSuGiaoDichEncyp;
+import com.banking.service.LichSuGiaoDichSer;
 import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -12,6 +15,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class CallService {
+    private static final Logger logger = LoggerFactory.getLogger(CallService.class);
+
     public static void callService(String url, LichSuGiaoDichEncyp lichSuGiaoDichDTO) throws IOException {
         try {   // Chuyển đối tượng thành JSON sử dụng Gson
             Gson gson = new Gson();
@@ -47,8 +52,11 @@ public class CallService {
                 // Hiển thị kết quả
                 System.out.println("API Response: " + response);
             } else {
-                System.out.println("Failed to send request. Response Code: " + responseCode);
-            }
+                logger.error("Error processing transaction. TransactionID: {}, Account: {}, InDebt: {}, Have: {}, Time: {}",
+                        redactSensitiveInfo(lichSuGiaoDichDTO.getTran()),
+                        redactSensitiveInfo(lichSuGiaoDichDTO.getAccDi()),
+                        redactSensitiveInfo(lichSuGiaoDichDTO.getIntDebt() + ""),
+                        redactSensitiveInfo(lichSuGiaoDichDTO.getHave() + ""));            }
 
             // Đóng kết nối
             connection.disconnect();
@@ -56,5 +64,9 @@ public class CallService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private static String redactSensitiveInfo(String sensitiveInfo) {
+        // Logic che giấu thông tin nhạy cảm ở đây, có thể thay thế bằng dấu '?'
+        return "?";
     }
 }

@@ -25,7 +25,6 @@ import java.util.Random;
 public class LichSuGiaoDichSer {
     @Autowired
     private ILichSuGiaoDich lichSuGiaoDichRes;
-    private static final Logger logger = LoggerFactory.getLogger(LichSuGiaoDichSer.class);
 
     private final String key = "key";
 
@@ -34,11 +33,6 @@ public class LichSuGiaoDichSer {
         System.out.println("add" + lichSuGiaoDich);
         if (lichSuGiaoDich.getAccDi().trim().length() == 0
                 || lichSuGiaoDich.getAccNhan().trim().length() == 0) {
-            logger.error("Error processing transaction. TransactionID: {}, Account: {}, InDebt: {}, Have: {}, Time: {}",
-                    redactSensitiveInfo(lichSuGiaoDich.getTran()),
-                    redactSensitiveInfo(lichSuGiaoDich.getAccDi()),
-                    redactSensitiveInfo(lichSuGiaoDich.getIntDebt() + ""),
-                    redactSensitiveInfo(lichSuGiaoDich.getHave() + ""));
             throw new LichSuNotNullException("Not null");
         }
 
@@ -85,9 +79,6 @@ public class LichSuGiaoDichSer {
                 .build();
     }
 
-    private static String redactSensitiveInfo(String sensitiveInfo) {
-        // Logic che giấu thông tin nhạy cảm ở đây, có thể thay thế bằng dấu '?'
-        return "?";
-    }
+
 
 }
